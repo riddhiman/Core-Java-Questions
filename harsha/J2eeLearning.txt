@@ -1,0 +1,33 @@
+(1).Container:It provide runtime environment for JavaEE(J2EE) application--->It handle many operation:
+1.Lifecycle Managment
+2.MultiThreading Support
+3.object pooling
+4.security
+(2).Server:It is a running program or software that provides services --->
+1.Web server --->It contain only web or servlet container ex:It can be used for servlet, jsp, struts, jsf etc. It can't be used for EJB. exp:Apache Tomcat and Resin
+2.Application server -->It contains Web and EJB containers. It can be used for servlet, jsp, struts, jsf, ejb etc.
+exp: JBOSS,Websphere
+Content Type--->also know as (Multipurpose internet Mail Extension) Type -->HTTP header-->it provide description about 
+(3).what are you sending to the browser
+setContentType(…) method should be set in a response object before using the PrintWriter or the OutputStream
+Request Parameters
+Request Attribute 
+....................................
+scopes or places where a servlet can save data for its processing?
+request-scoped for both getting/setting--->request.setAttribute(“calc-value”, new Float(7.0));
+                                           request.getAttribute(“calc-value”);
+session-scoped value -->It is available across multiple requests.
+ServletContext--->It is shared by all servlets and JSPs in the context
+..................................
+getSession(true):If exits it will return session object otherwise it will create new  session object 
+getSession(false):If exits it will return session object otherwise it will return null.
+(4).life cycle methods of a servlet?
+1.Web container is responsible for managing the servlet’s life cycle
+2.It creates an instance of the servlet and then the container calls the init() method								   
+Advantages of Threads:
+They share a common memory area, lightweight, cost of communication between the threads are low
+CGI vs Servlet -->Process vs Thread
+better performance: because it creates a thread for each request not process.
+Portability: because it uses java language.
+Robust: Servlets are managed by JVM so no need to worry about momory leak, garbage collection etc.
+Secure: because it uses java language..

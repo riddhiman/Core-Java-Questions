@@ -1,0 +1,81 @@
+1. program to find duplicate counts in a list
+2. program to display 2nd highes salary employee in a list
+3. difference between jdbc and hibernet
+4. difference between save() and saveorUpdate()
+5. what is continuous integration
+6. difference between java1.6 and java 1.7
+7. what is a volatile
+8. many to many relations
+9. what is detached, persistence, transient object in hibernet
+10. what is AOP and what is the use. what we will implement in AOP
+11. what are design patterns u know.
+12. what is reflection API
+13. webservices: what is the difference between REST and SOAP webservices
+14. write a query to get the 2nd highest salary from employee table
+15. how to load properties from a property file
+16. how to call a stored procedure in jdbc
+17. what is a ConcurrencyHashMap
+18. write a singleton class
+19. implement a sample thread program
+20. what s differences between notify() and notifyAll()
+21. what s yield(), join(), wait(), sleep()
+22. how HashMap get() will work
+23. how HashSet implemented internally
+24. what all collections we have used in ur project
+25. Types of drivers in JDBC 
+http://javarevisited.blogspot.in/2011/02/how-hashmap-works-in-java.html
+http://javarevisited.blogspot.in/
+
+http://javarevisited.blogspot.in/2011/06/top-programming-interview-questions.html
+http://www.geeksforgeeks.org/
+https://www.hackerrank.com/
+http://www.techgig.com/
+
+Fattery patterns
+what simplification is there for hibernate & Spring jdbc templelate
+Spring MVC,DI,AOP ,either seetter base or constructor base DI
+
+Spring bean scope diff b/w prototype & request
+AnnotationConfiguration of Hibernate(1-1,1-many,many-1) 
+Spring configuration for (1-1,1-many,many-1).
+java 1.7 version changes
+How to get field values inside controller from jsp
+Default type DI(i,e setter based, construtor based)
+LazyloadingException
+lifecycle of ApplicationContext & BeanFactory
+limitation of Autowiring
+how to create servlet object--->it will be created by container while calling init method
+how to implement html with ajax call
+what do you mean by atomic variable
+reverse a string without use predefined methods
+how many ways to achevie sorting other than comparable & comparator?
+how to create Junit at transactional layer
+Beans Scope(Prototype vs Singleton)
+Userdefined Exception
+IOC VS DI
+hibernate performance tunning
+Spring Circular reference --->how to overcome 
+init --> destroy method inside init method
+java singleton vs Spring singleton
+
+@Autowire
+@resource
+cascade
+Bean life cycle
+DI
+IOC
+Bean scope
+overcome ConcurrentModification 
+When we submit a button ---> how to get values either in Spring/servlet/jsp
+How to handle Exception in production environment
+How to convert HashSet ---> json\
+Json ---> default Package
+Hibernate --->Constructor
+
+
+
+
+ 
+
+
+

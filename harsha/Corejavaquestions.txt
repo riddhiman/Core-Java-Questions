@@ -1,0 +1,372 @@
+final--->modifier applicable for class(can't extend),methods(can't override method) and variable(can't do reassignment) 
+finally--->always associated with try & catch it contain cleanup code(i,e resource),cleanup activity meant for try block
+finalize---->it is method present in object class invoked by Garbagecollector ,to perform clean up activity before destroying object,cleanup activity meant related to object.
+.equals()-->this a method inside object class meant for reference comparision based on requirement we can override ,In case String class all wrapper class and collection class meant for content comparison.
+== ---> refernce or address comparison 
+.equal()--->content comparision.
+
+
+String:Object are immutable
+Benefits of Immutable object:
+1.Concurrency and multithreading advantages(thread safety,boost performance)
+Steps to create Immutable class:
+1. Don’t provide “setter” methods inside class
+2.Make all fields final and private
+3.Don’t allow subclasses to override methods ---> make class as final
+
+ex:public final class Contacts {
+
+    private final String name;
+    private final String mobile;
+
+    public Contacts(String name, String mobile) {
+        this.name = name;
+        this.mobile = mobile;
+    }
+  
+    public String getName(){
+        return name;
+    }
+  
+    public String getMobile(){
+        return mobile;
+    }
+}
+
+StringBuffer:Object are mutable
+ calling Destroy() method inside init() method :it wont destroy servlet but content inside  the destroy() gets executed and then the servlet initialization gets completed.
+
+http://capptitudebank.blogspot.com/2012/04/hcl-java-interview-questions-and_2971.html
+
+Interface:
+1.It is a reference type, similar to a class, that can contain only constants, method signatures, default methods, static methods, and nested types.
+2.Method bodies exist only for default methods and static methods.
+3.It cannot be instantiated—they can only be implemented by classes or extended by other interfaces
+4.if you want to add additional methods to an interface, you have 2 options
+(i).By extending olderinterface with Newinterface.
+(ii).by adding new method as default method inside interface
+EXTENDING INTERFACES THAT CONTAIN DEFAULT METHODS:
+When you extend an interface that contains a default method, you can do the following:
+Not mention the default method at all, which lets your extended interface inherit the default method.
+Redeclare the default method, which makes it abstract.
+Redefine the default method, which overrides it.
+* Methods in an interface that are not declared as default or static are implicitly abstract.
+It can contain constant declarations with public, static, and final.
+Abstract Class:
+1.It is a class that is declared abstract—it may or may not include abstract methods.
+2.It cannot be instantiated, but they can be subclassed.
+3. In this you can declare fields that are not static and final, and define public, protected, and private concrete methods.
+4.An abstract class may have static fields and static methods
+
+Following scenario we will use abstract class:
+1.U want to share among closely related classes.
+2.The class that extend ur abstract class have many commonly methods or fields or require access specifier other than public.
+3.we want to declare non-static or non-final fields.This enables you to define methods that can access and modify the state of the object to which they belong.
+
+Following scenario we will use interface:
+1. you want take advantage of multiple Inheritance.
+2.You want to specify the behavior of a particular data type, but not concerned about who implements its behavior.
+3.You expect that unrelated classes(3rd party) would implement your interface 
+
+CONCURRENTMODIFICATIONEXCEPTION:
+1.Java Collection Class are Fail fast which means collection will be changed while some thread is traversing over it using iterator,It may occur in single thread or multithreaded environment.
+steps to avoid concurrentModification Exception on MultiThreaded environment:
+1.copy list to array and then iterate on the array--->It is applicable for small/medium size list
+2.u lock the list using synchronised block --->it leads to cease benefit of multithreading
+3.Use of ConcurrentHashMap or CopyOnWriteArraylist it is recommended after jdk 1.5
+
+ConcurrentHashMap:It is very similar to HashTable it provide better concurrency level.
+HashTable can be synchronised by Collections.synchronised(Map) it locks whole HashTable object but in ConcurrentHashMap, it locks only part of it.
+ConcurrentHashMap--->it will not throw Concurrentmodification exception.
+ConcurrentHashMap class has a inner class called Segment.
+Segment[] array--->segments it has size 16 ,it has more variable called  segmentShift and segmentMask,This segments stores Segment class's object.
+ConcurrentHashMap locks only part of it ,it actually lock  a segmentMask if two threads are  writing different segments in same ConcurrentHashMap, it allows write operation without any conflicts.
+So Segments are only for write operations. In case of read operation, it allows full concurrency and provides most recently updated value using volatile variables.
+ConcurrencyLevel---->Estimated number of threads going to write to the ConcurrentHashMap
+
+Put Entry:
+1.In concurrentHashMap,Key can not be null,key hashcode method is used to calculate hash code
+2.It will find segment for given key using above SegmentFor method .
+3.After getting segment while putting key value pair in segment it aquire lock so that no other thread block.
+its put method is similar to HashMap put method.
+
+Getting value from ConcurrentHashMap:
+Calculate hash using key 's Hashcode
+Use segmentFor to get index of Segment.
+Use Segment's get function to get value corresponding to the key.
+If it does not find value in ConcurrentHashMap ,it locks the Segment and tries again to get the value.
+ConcurrentHashMap(int intialCapacity,float loadFactory,int concurrencyLevel);
+ConcurrentHashMap will perform much better if you have few write threads and large number of read threads.
+
+CopyOnWriteArraylist:It is introduced in java 1.5,threadsafe,it involves costly Array copy with every write operation but its very efficient.
+It is failsafe and does not throw concurrentModificationException
+It keep a copy of original List and iterator over this,The new value which has been added is merged to copy of original array only after iterator is over.
+We can use iterator method(remove) to modify the list--->Arraylist
+We cannot use iterator method to modify the elements of CopyOnWriteArraylist
+
+Fail Fast :This iterator Knows the internal structure is modified or not with the help of "mods" flag,whenever there is structural modification at that time mods fag change when it calls next method thus it throws concurrentModificationException.
+Fail Safe:This iterator makes a copy of internal datastructure and iterator over copied data structure,any structural modification will result to change in copied datastructure, so original datastructure remains unchanged
+2 issue:
+1.Memmory utilisation
+2.It does not gaurantee that data being read is the data currently in original data structure
+Element changing operation on iterator themselves(remove(),set() and add()) are not supported -->unsupportedOperationException
+
+												Fail Fast Iterator	  Fail Safe Iterator
+Throw ConcurrentModification Exception					Yes					No
+Clone object											No					Yes
+Memory Overhead											No					Yes
+Examples					HashMap,Vector,ArrayList,HashSet	CopyOnWriteArrayList,ConcurrentHashMap
+
+To make collections readonly:
+Collections.unmodifiableCollection(Collection c)
+Collections.unmodifiableMap(Map m)
+Collections.unmodifiableList(List l)
+Collections.unmodifiableSet(Set s)
+when we call add() or remove() method on the readOnly collection --->unsupportedOperationException
+
+HashMap                                            ConcurrentHashMap
+1.It is not Threadsafe							1.It is  Threadsafe
+2.synchronizedMap(HashMap)-->It will lock whole map 2.It will lock only certain portion of Map
+3.It will not allow null key & value                 3.It allow only one null key
+4.It is faster in Multithreaded env                   4.It is slower
+
+
+
+Collections:
+To manually increase the current capacity ensureCapacity() method is used
+trimToSize() method is used to trim the capacity of arrayList to the current size of ArrayList
+
+JDBC API: It uses jdbc driver to connect to database and execute query.
+4Types of jdbc drivers:
+1.JDBC-ODBC bridge driver(in this jdbc method calls--->odbc function calls)i,e performance degrade,ODBC driver need to installed in client m/c
+2.Native API driver:It uses client side libraries of db.It convert jdbc methods calls to native calls of database API
+3.N/w Protocal driver:It uses middle ware that convert JDBC calls directly into vendor specific database protocal
+4.Thin driver:It convert JDBC calls to vendor specific database protocol,it is thin driver,written in java
+
+Steps in connecting to database:
+1.Register the driver class----->public static void forName(String className)throws ClassNotFoundException(i,e Class.forName("")
+2.Creating connection
+3.creating statement
+4.Executing queries
+5.closing connection
+Steps:
+1.DriverManager.registerDriver(new sun.jdbc.odbc.jdbcodbcDriver());
+2.Connection con = DriverManager.getConnection("jdbc:odbc:ordsan","scott","tigger");
+3.Statement stm = con.CreateStatement();
+            or
+3.PreparedStatment stm = con.prepareStatement("insert into table value(?,?)");
+4.stm.executeQuery("");
+
+PreparedStatment: It is subinterface for Statment,to executeParameterized query --->
+It improve performance because query is compiled only once
+It automatically escapes the special characters and avoid SQL injection attacks.
+It allow to run dynamic query with parameters inputs.
+caching benefit.
+java.sql.Statement interface of jdbc API
+Public int executeUpdate()-->execute query ,it is used for create,drop,insert ,update and delete.
+Public ResultSet executeQuery()--->it is used for select query ,it return instance of ResultSet
+  public  boolean execute(String sqlquery)
+
+
+JDBC Statement:
+1.It is used to execute SQL queries in database
+2.Connection.getStatement() method 
+3.It is used to execute static sql queries by passing query through different execute methods.
+(i).Statement execute(String query)--->to execute query it return true if the result is an ReultSet such as running select query
+(ii).Statement executeQuery(String query)--->it is used for select query and it return ResultSet ,it never return null if there is no matching but it will throw java.sqlexception when it is executed for insert/update.
+(iii)Statement executeUpdate(String query)--->it is used for insert/update/delete(DML) -->o/p is int equal to row count ,for DDL it return output is 0.
+All execute() method  statment implicitly close statement's current resultset object if an open exist
+
+Dirty Read --->when we are working with transaction there is chance for row is updated and at same time other query can read the updated value.it result in dirty read because updated value is not permananent yet,the transaction that has updated the row can be rollback to previous invalid data.
+with the help of isolation level we can prevent TRANSACTION_READ_COMMITTED, TRANSACTION_REPEATABLE_READ and TRANSACTION_SERIALIZABLE.
+
+2 Phase Commit(i,e 1.commit Request phase & 2.commit phase):It work in distributed system where multiple db's are involved.It is an atomic commitment protocal for distributed systems.
+1.transaction manager send commit request to all transaction resources--->if all transaction resource are ok then it will commit , else if anyone respond as abort ,then it will rollback all the request.
+
+By using Callable Statement interface--->we can execute stored procedure
+
+DriverManger:It acts as interface b/n user and drivers,it keep track of drivers that are available and establish connection between DB and appropriate driver.
+DriverManager.registeredDriver().
+Connection(I)--->It maintain session b/n java application and database,It has a factory of Statement and PreparedStatment and DatabaseMetaData.
+It provide transaction managment methods like commit(),rollback().
+
+Cursor work in scrollable result set:
+In JDBC 2.0 API it has a feature to move cursor in resultset backward and forward in a particular row.
+3 constants are:
+1.TYPE_FORWARD_ONLY:It create nonscrollable resultset,one in which cursor move in forward only.
+2.TYPE_SCROLL_INSENSITIVE:It uses scrollable result set does not reflect changes made to it when open.
+3.TYPE_SCROLL_SENSITIVE:scrollable resultset reflect chnages made to it while open.
+
+Locking system in database:
+Optimistic locking:It will lock the record only when update take place.It does not use exclusive locking when reading
+Pessimistic locking:In this record are locked as it select the row to update.
+
+Transaction :It represent single unit of work
+Atomicity:means either all successful or none.
+Consistency:It ensure that db from one consistent state to another consistent state.
+Isolation:It ensure that one transaction need to isolate from other transaction
+Durability:It means once transaction has been committed , it will remain so even event in power loss.
+
+Table:A table is a set of data that are organized in a model with Columns and Rows.
+Primary Key:It is a combination of fields which uniquely specify a row, which is not nullable.
+Unique Key:It is a constraint uniquely identified each record in the database. This provides uniqueness for the column or set of columns.A Primary key constraint has automatic unique constraint defined on it. But not, in the case of Unique Key.
+There can be many unique constraint defined per table, but only one Primary key constraint defined per table.
+FK:It one table which is related to PK of another table.
+Joins are used to combine rows from two or more tables:
+(i).InnerJoin:It will return set of records that match in both Table A & Table B (i,e intersection)
+(ii).FullOuterJoin:It will return set of all records from both TabA & TabB with matching record from both side,if no match missing side will contain null.
+(iii).LeftOuterJoin:It produces complete set of record  
+
+http://career.guru99.com/top-50-sql-question-answers/
+
+HASHMAP:It work on Hashing principal.It stores both key and value object in bucket,as an object of Entry class which  implement this nested interface Map.Entry
+It uses put() method --->it will call hashcode method on key object to calculate hash ,that gives us to find bucket location where entry object will be stored.
+It uses get(key) method for retrieving it also uses hash method on key to caculate hash to find the bucket where particular key is stored.
+HashMap :it uses (i).hashcode() & (ii)equals() method for hashcollision.
+hashcode method help in finding bucket where key is stored.equal method help in finding right key as there are more that one key-value pair stored in a single bucket.
+Note that when hash value is same for 2 objects but equal method return false in that case both keys are stored in same bucket in a linkedlist.
+if equal -->false :in this case new node get created with map entry and stored within same bucket.A linked list is used to store those nodes.
+if equal ---->true :in that case it will override old value with matched key.
+In case of null key it always map to bucket 0  as hash is not calculated for null key.
+Java 8 onwords HashMap uses balanced tree instead of LinkedList after reaching certain threshold --> it will improve worst case performance from O(n) to O(logn)
+
+Singleton Pattern:This class as per classloader level.
+Only one instance per classloader:
+It uses only one instance of that class
+constructor of class has to made private to avoid instialisation from external class
+declare a static variable to store the instance for this class
+declare a method that return instance of that class
+Eager Intialisation :In this instance get created even though it is not used by any client.--->it won't provide exception hadling
+Static Block intialisation:Instance creation inside static block--->it won't provide exception hadling
+Lazy intialisation:In this we are creating instance only after loading the class and first invocation of instance
+Thread Safe singleton:In this method used for creating the singleton instance is Synchronised.
+
+Spring Singleton:It is per spring container.It simply create  a new instance of that class and that is available in the container to all classloader which uses container.
+(i).multiple container uses same class loader --->u will get multiple instance
+(ii).same spring container used by multiple class loader ---->only one instance.
+
+....................................................................................................................
+J2SE(Java Platform, Standard Edition) is mainly used to create applications for Desktop environment
+J2ME(Java Platform, Micro Edition)  is mainly concentrated for the applications running on embedded systems, mobiles and small devices
+J2EE(Java Platform, Enterprise Edition)The Enterprise version of Java has a much larger usage of Java, like development of web services, networking, server side scripting and other various web based applications.
+J2EE uses many components of J2SE, as well as, has many new features of it’s own like Servlets, JavaBeans, Java Message Services, adding a whole new functionalities to the language
+J2EE uses HTML, CSS, JavaScript etc., so as to create web pages and web services. It’s also one of  the most widely accepted web development standard.
+               
+		  compiler	         JVM
+first.java------>first.class----->Native understanding form of OS---->get result
+                  byte code        Interpreter
+				  
+JAVA API --->1.classes
+             2.Interfaces
+             3.Subpackages----->1.classes 
+                                2.Interfaces
+                                3.subpackage
+slogan for sun microsystem is (write once run/reuse anywhere)	
+Protability--->PID+Architectural Neutral.
+...............................................................
+JDK Version 1.0
+Codenamed Oak and released on January 23, 1996.	
+JDK Version 1.1
+----------------------------------------------
+New features in JDK 1.1(Released on February 19, 1997)
+JDBC (Java Database Connectivity)
+Inner Classes
+Java Beans
+RMI (Remote Method Invocation)
+Reflection (introspection only)	
+--------------------------------------------------------
+New features in J2SE 1.2(J2SE Version 1.2,Code named Playground and released on December 8, 1998.)
+Collections framework.
+Java String memory map for constants.
+Just In Time (JIT) compiler.
+Jar Signer for signing Java ARchive (JAR) files.
+Policy Tool for granting access to system resources.
+Java Foundation Classes (JFC) which consists of Swing 1.0, Drag and Drop, and Java 2D class libraries.
+Java Plug-in
+Scrollable result sets, BLOB, CLOB, batch update, user-defined types in JDBC.
+Audio support in Applets.
+-----------------------------------------------------------
+J2SE Version 1.3(Code named Kestrel and released on May 8, 2000.)
+New features in J2SE 1.3
+Java Sound
+Jar Indexing
+A huge list of enhancements in almost all the java area.
+-------------------------------------------------------------------
+New features in J2SE 1.4(Code named Merlin and released on February 6, 2002 (first release under JCP).)
+XML Processing
+Java Print Service
+Logging API
+Java Web Start
+JDBC 3.0 API
+Assertions
+Preferences API
+Chained Exception
+IPv6 Support
+Regular Expressions
+Image I/O API
+------------------------------------------------------------------
+J2SE Version 5.0(Code named Tiger and released on September 30, 2004.)
+New features in J2SE 5.0
+Generics
+Enhanced for Loop
+Autoboxing/Unboxing
+Typesafe Enums
+Varargs
+Static Import
+Metadata (Annotations)
+Instrumentation	
+---------------------------------------------------------------------------
+Java Version SE 6(Code named Mustang and released on December 11, 2006.)
+New features in Java SE 6
+Scripting Language Support
+JDBC 4.0 API
+Java Compiler API
+Pluggable Annotations
+Native PKI, Java GSS, Kerberos and LDAP support.
+Integrated Web Services.
+Lot more enhancements.	
+------------------------------------------------------------------------
+Java Version SE 7(Code named Dolphin and released on July 28, 2011.)
+New features in Java SE 7
+Strings in switch Statement
+Type Inference for Generic Instance Creation
+Multiple Exception Handling
+Support for Dynamic Languages
+Try with Resources
+Java nio Package
+Binary Literals, underscore in literals
+Diamond Syntax
+Automatic null Handling	
+---------------------------------------------------------
+Java SE 8(code name culture ,no official code name going forward from Java 8.)
+New features in Java SE 8
+Lambda Expressions
+Pipelines and Streams
+Date and Time API
+Default Methods
+Type Annotations
+Nashhorn JavaScript Engine
+Concurrent Accumulators
+Parallel operations
+PermGen Error Removed
+TLS SNI	
+------------------------------------------------	
+Procedurce oriented programming languages---> no security-->Object oriented programming.
+In general all the classes in java will have logical existance and all objects in java will have physical existence.
+print & println ---> are 2 predefined instance method in a  predefined  PrintStream class.
+object of printstream class called "out" is created in another predefined class System a static data member
+System.out.print
+(C))(Obj)(method).
+Static data members takes common values.
+ 
+
+The JRE is the software environment in which programs compiled for a typical JVM implementation can run. The runtime system includes:
+Code necessary to run Java programs, dynamically link native methods, manage memory, and handle exceptions
+Implementation of the JVM
+The following figure shows the JRE and its components, including a typical JVM implementation's various modules and its functional position with respect to the JRE and class libraries.
+
+JQuery:It is a set of javascript libraries designed specifically HTML document traversing , animation, event handling and ajax interaction
+
+JavaScript:It is a scripting language
+
+

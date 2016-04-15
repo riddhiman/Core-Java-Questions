@@ -1,0 +1,57 @@
+Exception:
+It is an event that occurs during the execution of a program that disrupts the normal flow of instructions.
+Java.lang.Throwable--->1.Exception 2.Error.
+1.Exception:
+These are recoverable. Most of the cases exceptions are raised due to program code only.
+2.Error:
+Errors are non-recoverable. Most of the cases errors are due to lack of system resources but not due
+to our programs
+
+JVM can't process java prg with invalid i/p 
+-->it will contact to JRE--->1.It in turn contact to java.lang.throwable-->it decide what type of Exception occurred
+                              2.It further contact to java.Exception API-->it give appropriate exception subclass
+							   based on this jvm generate system error msg.
+							   
+							
+Exception:
+1.when overriding a method with exception handling. If super class method does not declare any exception, then sub class overriden method cannot declare checked exception but it can declare unchecked exceptions.
+2.If Super class method throws an exception, then Subclass overriden method can throw the same exception or no exception, but must not throw parent exception of the exception thrown by Super class method.
+Creating Custome Exception:1.CheckedException
+                           2.UnCheckedException
+While creating a custom exception, prefer to create an unchecked, Runtime exception than a checked exception, especially if you know that client is not going to take any reactive action other than logging
+class NoSuchProductException extends RuntimeException { 
+private int productId; 
+public NoSuchProductException() { 
+super(); 
+} 
+public NoSuchProductException(String message, int productId) { 
+super(message); 
+this.productId = productId; 
+} 
+public NoSuchProductException(String message, int productId, Throwable cause) { 
+super(message, cause); this.productId = productId; 
+} 
+public int getProductId() { 
+return productId; 
+} 
+}
+(i).public void print StackTrace();---> since its return type is void so it should not be used with sop and sep ,It gives 1.Name of unknown exception,2.nature of msg,3.line no
+(ii).public String getMessage()---->it gives nature of msg which occurred because of exception
+(iii).toString()-it will display NameofException:Description.
+Note: Default Exception handler always uses printStackTrace method only.
+
+
+NoClassDefFoundError:
+It is a subclass of java.lang.Error.
+It is an Error which is unchecked in nature, i.e. doesn't require try-catch or finally block.
+1.It is that NoClassDefFoundError is a LinkageError and can come during linking
+2. It occur during Static Initializer block,corresponding class is missed in classpath,jar is missed.
+3.It causes multiple classloaders in J2EE 
+4.Permission issue on JAR file.
+
+ClassNotFoundException:
+It is a subclass of java.lang.Exception
+1.It is a checked Exception and requires mandatory handing using either try with catch block or try with finally block, failure to do so will result in compile time error.
+2.It is thrown as result of following method call, Class.forName(), ClassLoader.findSystemClass() and ClassLoader.loadClass().
+3.It  is an Exception and occurs during runtime.
+

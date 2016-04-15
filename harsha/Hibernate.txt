@@ -1,0 +1,52 @@
+Procs of JDBC:
+1.Its clean & simple SQL processing,good performance with large data,good for small application,syntax is easy.
+Cons of JDBC:
+Complex if it used in large project,large prg overhead,hard to implement MVC,No encapsulation,
+Loading & storing objects in a relational database:
+1.Granularity--object model which has more classes then corresponding tables in database.
+2.Inheritance---RDMS can't define this
+3.Identity ----RDBM's support sameness the primary key where as object uses object identity and object equality
+4.Association
+5.Navigation
+Hibernate:It is pure java object relation mapping(ORM)and Persistence framework that allow to map from Plain old java object to relational database tables using XML configuration.It main intention is to relieve developer from presistance related programming task.
+ORM(ObjectRelationalMapping):It is an automatted persistance of objects in java application to tables in relational database
+ORM consists off:
+1.API to express queries  referring to classes
+2.API for performing basic CURD operation
+3.Facilities to specify metadata
+4.Optimization facilities : dirty checking,lazy associations fetching
+ORM LEVELS:
+1.Pure relational:Entire application is based on relational model and sql relational operation
+2.Light object Model:Enties are represented with classes and manually mapping into relational tables,The code is hidden from business logic with some design patterns,It is good when application contain less number of entities or application with common metadata-driven data models.
+3.Medium Object Model
+4.Full object Model:It has sophisticated object modeling:Composistion,Inheritance,Polimorphism and Persistance,
+The persistence layer implements transparent persistence.Efficient fetching strategies and caching strategies are implemented transparently to the application 
+
+BENEFITS OF ORM AND HIBERNATE:
+1.Improved Productivity:
+High-level object-oriented API
+Less Java code to write
+No SQL to write
+2.Improved performance
+Sophisticated caching
+Lazy loading
+Eager loading
+3.Improved maintainability
+A lot less code to write
+4.Improved portability
+ORM framework generates database-specific SQL for you
+
+Hibernate.dialect property tells Hibernate to generate the appropriate SQL statements for the chosen database.
+Hibernate query Language (HQL), is an object-oriented extension to SQL.it allow us to perform store update and retrieve objects from database.
+The most common methods of Hibernate configuration are:
+Programmatic configuration
+XML configuration (hibernate.cfg.xml)-->jdbc connection ,dialect,autogeneration database schema(hibernate.hbm2.ddl.auto),mapping files(filename.hbm.xml) 
+...............................................................................
+Model --->1.Business
+          2.Services
+		  3.DAO
+EJB Problem:
+Performane Tunning in Hibernate:
+SQLOptimisation:hibernate.jdbc.fetch_size,hibernate.jdbc.batch_size,hibernate.show_sql to false
+SessionManagment:approaches to session management in hibernate is to use ThreadLocal. Threadlocal will create a local copy of session for every thread. Thus synchronization problems are averted, when objects are put in the Threadlocal
+DataCaching : by setting hibernate.cache.user_query_cache = true.i,e 1st level cache & 2nd level cache
